@@ -4,6 +4,8 @@ Situs perkenalan pribadi: cybersecurity researcher dan AI engineer.
 Dibangun sebagai satu halaman dengan hero 3D, terminal interaktif, dan
 seksi pencapaian yang datanya nyata.
 
+**Live:** https://syahrir.vercel.app
+
 ## Stack
 
 - **React 19** + **Vite 8** (build)
