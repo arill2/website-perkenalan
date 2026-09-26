@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  --color-abyss: #05070a;
+  --color-panel: #0d1117;
+  --color-panel2: #11161d;
+  --color-mint: #00e5a0;
+  --color-volt: #3d5afe;
+  /*
+   * volt-2: varian terang dari volt, khusus untuk TEKS.
+   * volt asli hanya 3.9:1 di atas abyss (gagal WCAG AA untuk teks normal);
+   * volt-2 mencapai 6.3:1 di atas panel. volt tetap dipakai untuk elemen
+   * non-teks (border, dot, marker globe) yang tidak terikat rasio teks (R-25).
+   */
+  --color-volt-2: #7b8cff;
+  --color-ice: #e8fff7;
+  --color-dim: #7a9aa3; /* dinaikkan dari #5c7a82: kontras ~6.3:1 di atas --color-panel (WCAG AA) */
+  --color-line: rgba(0, 229, 160, 0.14);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-abyss);
+  color: var(--color-ice);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-mint);
+  color: var(--color-abyss);
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-abyss);
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2b33;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mint);
+}
+
+/* scanline overlay tipis di hero */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 229, 160, 0.015) 3px,
+    transparent 4px
+  );
+}
+
+.panel-glow {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 160, 0.12),
+    0 0 40px rgba(0, 229, 160, 0.05),
+    inset 0 0 60px rgba(0, 229, 160, 0.02);
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* focus ring yang terlihat di tema gelap (R-32) */
+:focus-visible {
+  outline: 2px solid var(--color-mint);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/*
+ * Konten yang belum punya data asli (R-38).
+ * Ditandai terlihat agar tidak terbaca sebagai fakta.
+ * Ganti isi elemen ini setelah data asli tersedia, lalu hapus class-nya.
+ */
+.placeholder {
+  color: var(--color-dim);
+  font-style: normal;
+  border-bottom: 1px dashed rgba(122, 154, 163, 0.6);
+}
+
+/*
+ * Hormati preferensi sistem reduced-motion.
+ * Animasi JS (GSAP) dimatikan di komponen; sisanya dimatikan di sini.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .blink {
+    animation: none;
+  }
+
+  .scanlines::after {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
